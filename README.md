@@ -1,7 +1,7 @@
 # cURL request sending utility
 ## Minimal tool to allow using curl and jq like postman
 
-`send_request` formulates and runs a curl request based on the a request.json file, where it will substitute any variable like `$var` with the appropriate environment variable.
+`send_request` formulates and runs a curl request based on a request.json file, where it will substitute any variable like `$var` with the appropriate environment variable.
 
 Depends on `jq` and `curl`.
 
