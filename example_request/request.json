@@ -1,0 +1,13 @@
+{
+  "request_type": "POST",
+  "url": "$endpoint.test.com",
+  "headers": [
+    "X-AUTH-TOKEN: $authstr",
+    "ACCEPT: text/json"
+  ],
+  "params": [
+    "param1=test",
+    "param2=me"
+  ],
+  "user": "user:password"
+}

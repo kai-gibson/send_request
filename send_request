@@ -1,0 +1,47 @@
+#!/bin/sh
+if [ ! -e request.json ]; then
+  echo "no request.json config file found"
+  exit
+fi
+
+if [ -e vars.sh ]; then
+  source ./vars.sh
+fi
+
+config_file=$(cat request.json | envsubst)
+
+x=$(echo $config_file | jq -r '.request_type')
+url=$(echo $config_file | jq -r '.url')
+headers=$(echo $config_file | jq -r '.headers')
+params=$(echo $config_file | jq -r '.params')
+user=$(echo $config_file | jq -r '.user')
+
+curl_cmd="curl -X $x --url "${url}""
+
+if [ "$headers" != "null" ]; then
+  parsed_headers=$(echo $config_file | envsubst | jq '.headers|.[]' | xargs -I{} echo -n '-H "{}" ')
+
+  curl_cmd="${curl_cmd} $parsed_headers" 
+fi
+
+if [ "$params" != "null" ]; then
+  parsed_params=$(echo $config_file | envsubst | jq '.params|.[]' | xargs -I{} echo -n '--data-urlencode "{}" ')
+
+  curl_cmd="${curl_cmd} $parsed_params" 
+fi
+
+if [ "$x" = "POST" ]; then
+  if [ ! -e data.json ]; then
+    echo "no data.json payload file given"
+    exit
+  fi
+  curl_cmd="${curl_cmd} --data '$(cat data.json | envsubst)'" 
+fi
+
+if [ "$user" != "null" ]; then
+  curl_cmd="${curl_cmd} --user \"$user\""
+fi
+
+echo "curl command: $curl_cmd" 1>&2
+data=$($curl_cmd)
+echo $data
