@@ -9,12 +9,12 @@ Depends on `jq` and `curl`.
 Put `send_request` script somewhere in your path like `~/.local/bin`
 
 # Common usage:
-- create request directory with a request.json file, and optionally a vars.sh
-  and data.json file
+create request directory with a request.json file, and optionally a vars.sh and data.json file
 ```
-cd example_request
-send_request
+send_request example_request
 ```
+
+You can either give `send_request` a directory name (a request) to run, or run it in a request directory
 
 # Setting Environment Variables
 `send_request` will use environment variables to substitute into any field in

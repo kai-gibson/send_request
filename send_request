@@ -1,4 +1,10 @@
 #!/bin/sh
+
+# change to request dir if provided, else run in current dir
+if [ "$1" != "" ]; then
+   cd "$1"
+fi
+
 if [ ! -e request.json ]; then
   echo "no request.json config file found"
   exit
